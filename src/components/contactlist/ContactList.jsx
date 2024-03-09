@@ -8,7 +8,6 @@ import { useSelector } from 'react-redux';
 import { selectFilter, selectContacts } from 'myredux/selectors';
 const ContactList = () => {
   const contacts = useSelector(selectContacts);
-
   const filter = useSelector(selectFilter);
 
   const getVisibleContacts = () => {
@@ -31,14 +30,12 @@ const ContactListItem = ({ contact }) => {
   const dispatch = useDispatch();
   const onContactDelete = evt => {
     evt.preventDefault();
-    console.log(contact);
-
     dispatch(deleteContact(contact.id));
   };
   return (
     <li>
       <p>
-        {contact.name}: {contact.number}
+        {contact.name}: {contact.phone}
       </p>
       <button type="button" onClick={onContactDelete}>
         Delete

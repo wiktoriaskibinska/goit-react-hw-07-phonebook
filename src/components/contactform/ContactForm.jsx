@@ -22,12 +22,11 @@ const ContactForm = () => {
       id: nanoid(),
     };
     const isInContactsList = contacts.some(
-      ({ number }) => number === newContact.number
+      ({ phone }) => phone === newContact.phone
     );
     if (isInContactsList) {
       alert(`${newContact.name} is already in the contact list`);
     } else {
-      console.log(newContact);
       dispatch(addContact(newContact));
       evt.target.reset();
     }
