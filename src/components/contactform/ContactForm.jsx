@@ -3,13 +3,13 @@ import css from './ContactForm.module.css';
 //import PropTypes from 'prop-types';
 //import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts } from 'myredux/selectors';
-import { addContact } from 'myredux/contactsSlice';
+import { selectContacts } from 'myredux/selectors';
+import { addContact } from 'myredux/operations';
 import { nanoid } from '@reduxjs/toolkit';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = evt => {
     evt.preventDefault();
@@ -17,9 +17,9 @@ const ContactForm = () => {
     const name = form.elements.name.value;
     const number = form.elements.number.value;
     const newContact = {
-      id: nanoid(),
       name: name,
-      number: number,
+      phone: number,
+      id: nanoid(),
     };
     const isInContactsList = contacts.some(
       ({ number }) => number === newContact.number
@@ -27,6 +27,7 @@ const ContactForm = () => {
     if (isInContactsList) {
       alert(`${newContact.name} is already in the contact list`);
     } else {
+      console.log(newContact);
       dispatch(addContact(newContact));
       evt.target.reset();
     }

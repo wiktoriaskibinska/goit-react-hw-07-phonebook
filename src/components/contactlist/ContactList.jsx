@@ -3,18 +3,13 @@ import { nanoid } from 'nanoid';
 import css from './ContactList.module.css';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { deleteContact } from 'myredux/contactsSlice';
+import { deleteContact } from 'myredux/operations';
 import { useSelector } from 'react-redux';
-import { getFilter, getContacts } from 'myredux/selectors';
+import { selectFilter, selectContacts } from 'myredux/selectors';
 const ContactList = () => {
-  const contacts = useSelector(getContacts);
-  const dispatch = useDispatch();
-  const filter = useSelector(getFilter);
+  const contacts = useSelector(selectContacts);
 
-  const onContactDelete = evt => {
-    const idToDelete = evt.target.value;
-    dispatch(deleteContact(idToDelete));
-  };
+  const filter = useSelector(selectFilter);
 
   const getVisibleContacts = () => {
     const normalizedFilter = filter.toLowerCase();
@@ -27,22 +22,25 @@ const ContactList = () => {
   return (
     <ul className={css.contactList}>
       {visibleContacts.map(contact => (
-        <ContactListItem
-          contact={contact}
-          onContactDelete={onContactDelete}
-          key={nanoid()}
-        />
+        <ContactListItem contact={contact} key={nanoid()} />
       ))}
     </ul>
   );
 };
-const ContactListItem = ({ contact, onContactDelete }) => {
+const ContactListItem = ({ contact }) => {
+  const dispatch = useDispatch();
+  const onContactDelete = evt => {
+    evt.preventDefault();
+    console.log(contact);
+
+    dispatch(deleteContact(contact.id));
+  };
   return (
     <li>
       <p>
         {contact.name}: {contact.number}
       </p>
-      <button type="button" onClick={onContactDelete} value={contact.id}>
+      <button type="button" onClick={onContactDelete}>
         Delete
       </button>
     </li>

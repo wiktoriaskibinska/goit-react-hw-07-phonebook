@@ -4,22 +4,25 @@ import ContactList from './contactlist/ContactList';
 import Filter from './filter/Filter';
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getContacts, getItems } from 'myredux/selectors';
+import {
+  selectContacts,
+  selectError,
+  selectIsLoading,
+  selectFilter,
+} from 'myredux/selectors';
+
 import { fetchContacts } from 'myredux/operations';
 import axios from 'axios';
 axios.defaults.baseURL = `https://65ea1b39c9bf92ae3d3b1792.mockapi.io/`;
 
 export const App = () => {
-  const contacts = useSelector(getContacts);
   const dispatch = useDispatch();
-  const items = useSelector(getItems);
+  const contacts = useSelector(selectContacts);
+  const isLoading = useSelector(selectIsLoading);
+  const error = useSelector(selectError);
 
   useEffect(() => {
-    window.localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
-  useEffect(() => {
     dispatch(fetchContacts());
-    console.log(items);
   }, [dispatch]);
 
   return (
@@ -51,6 +54,7 @@ export const App = () => {
           alignItems: 'center',
         }}
       >
+        {isLoading && !error && <p>loading...</p>}
         <ContactList />
       </div>
     </div>
