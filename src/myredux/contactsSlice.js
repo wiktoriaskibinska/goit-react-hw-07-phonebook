@@ -41,11 +41,12 @@ export const contactsSlice = createSlice({
       .addCase(deleteContact.fulfilled, (state, action) => {
         state.isLoading = false;
         state.error = null;
-        const index = state.contacts.findIndex(
-          contact => contact.id === action.payload.id
+        state.contacts = state.contacts.filter(
+          contact => contact.id !== action.payload.id
         );
-
-        state.contacts.splice(index, 1);
+        /* const index = state.contacts.findIndex(
+          contact => contact.id === action.payload.id
+        );*/
       })
       .addMatcher(isPendingAction, handlePending)
       .addMatcher(isRejectAction, handleRejected);
