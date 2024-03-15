@@ -8,7 +8,6 @@ import {
   selectContacts,
   selectError,
   selectIsLoading,
-  selectFilter,
 } from 'myredux/selectors';
 
 import { fetchContacts } from 'myredux/operations';
